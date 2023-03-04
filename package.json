@@ -1,0 +1,25 @@
+{
+  "name": "marie",
+  "version": "1.0.0",
+  "description": "A chrome extension for marriage reservation in Guangdong China",
+  "main": "popup.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KKKyrie/marie.git"
+  },
+  "keywords": [
+    "chrome",
+    "plugin",
+    "marriage-reserver"
+  ],
+  "author": "kyrieliu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KKKyrie/marie/issues"
+  },
+  "homepage": "https://github.com/KKKyrie/marie#readme",
+  "devDependencies": {}
+}
