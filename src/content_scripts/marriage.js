@@ -38,6 +38,11 @@ const info = {
       phone: { value: '158XXXXXXXX', editor: '#lxdhnv', },
     },
   },
+
+  address: {
+    date: '2023-05-20',
+    city: '440300000000',
+  },
 };
 
 // https://www.gdhy.gov.cn/yyjh.do?do=preYyxxOper&yyrq=2022-05-19&djjg=4403040A1000&yysj=16:30-17:00&ydbllx=01
@@ -112,9 +117,9 @@ const Page = {
   autoFillTimeAndBase() {
     // page 3
     const dateEditor = find('#yyrq');
-    dateEditor.value = '2022-05-20';
+    dateEditor.value = info.address.date;
     const baseEditor = find('select[name="blcs"]');
-    baseEditor.value = '440300000000';
+    baseEditor.value = info.address.city;
     const queryButton = find('a[class="querybtn"]');
     queryButton.click();
   },
