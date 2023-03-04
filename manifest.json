@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
-	"name": "marriage-reserver",
-	"version": "1.0",
+	"name": "Marie",
+	"version": "1.0.0",
 	"description": "广东省结婚登记预约小帮手",
 	"icons": {
 		"19": "images/logo.png",
