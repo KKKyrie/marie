@@ -25,7 +25,7 @@ const Reserver = {
 		}, false);
 
 		secondButton.addEventListener('click', () => {
-			that.fillThePage(3);
+			that.fillThePage(4);
 		}, false);
 	},
 
@@ -48,6 +48,7 @@ const Reserver = {
 		chrome.tabs.getSelected(null, function (tab) {
 			// 根据当前页面 url 向 content_script 发送不同的指令
 			const url = tab.url;
+			console.log(url);
 			if (url.indexOf('main.jsp') > 0) {
 				// 首页
 				that.fillThePage(1);
