@@ -1,49 +1,44 @@
 const info = {
-  male: {
-    firstPageInfo: {
-      city: { value: '440300000000', editor: '#area_citynan' },
-      area: { value: '440305000000', editor: '#area_countynan' },
-      street: { value: '440305002000', editor: '#area_townnan', },
-      address: { value: '广东省深圳市南山区XXX', editor: '#fjdnan' },
-      liveCity: { value: '440300000000', editor: '#jzd_citynan', },
-      liveArea: { value: '440304000000', editor: '#jzd_countynan' },
-      liveStreet: { value: '440304010000', editor: '#jzd_townnan', },
-    },
-
-    secondPageInfo: {
-      name: { value: '刘XX', editor: '#xmnan', },
-      id: { value: '610102XXXXXXXXXXXX', editor: '#sfzjhmnan', },
-      degree: { value: '大学', editor: '#whcdnan', },
-      job: { value: '专业技术人员', editor: '#zynan', },
-      phone: { value: '155XXXXXXXX', editor: '#lxdhnan', },
-    },
+  maleInfo: {
+    name: { value: '刘XX', editor: '#xmnan', },
+    id: { value: '610102XXXXXXXXXXXX', editor: '#sfzjhmnan', },
+    degree: { value: '大学', editor: '#whcdnan', },
+    job: { value: '专业技术人员', editor: '#zynan', },
+    phone: { value: '155XXXXXXXX', editor: '#lxdhnan', },
   },
 
-  female: {
-    firstPageInfo: {
-      city: { value: '440300000000', editor: '#area_citynv' },
-      area: { value: '440304000000', editor: '#area_countynv' },
-      street: { value: '440304011000', editor: '#area_townnv', },
-      address: { value: '广东省深圳市福田区XXX', editor: '#fjdnv' },
-      liveCity: { value: '440300000000', editor: '#jzd_citynv', },
-      liveArea: { value: '440304000000', editor: '#jzd_countynv' },
-      liveStreet: { value: '440304010000', editor: '#jzd_townnv', },
-    },
-
-    secondPageInfo: {
-      name: { value: '卢XX', editor: '#xmnv', },
-      id: { value: '42XXXXXXXXXXXXXXXX', editor: '#sfzjhmnv', },
-      degree: { value: '硕士研究生', editor: '#whcdnv', },
-      job: { value: '其他从业人员', editor: '#zynv', },
-      phone: { value: '158XXXXXXXX', editor: '#lxdhnv', },
-    },
+  femaleInfo: {
+    name: { value: '卢XX', editor: '#xmnv', },
+    id: { value: '42XXXXXXXXXXXXXXXX', editor: '#sfzjhmnv', },
+    degree: { value: '硕士研究生', editor: '#whcdnv', },
+    job: { value: '其他从业人员', editor: '#zynv', },
+    phone: { value: '158XXXXXXXX', editor: '#lxdhnv', },
   },
 
   address: {
-    date: '2023-09-26',
-    city: '440300000000',
+    date: '2025-08-22', // 默认办理日期
+    city: '440100000000', // 默认办理城市：广州市
+    // 意向办理网点列表，若优先级高的网点没有可预约时间，则依次尝试优先级低的网点
+    officeList: [
+      '4401040A0000', // 广州市越秀区民政局婚姻登记处
+      '4401050A0000', // 广州市海珠区民政局婚姻登记处
+      '4401060A0000', // 广州市天河区民政局婚姻登记处
+    ],
+    // 意向办理时间列表，若优先级高的时段没有可预约时间，则依次尝试优先级低的时段
+    timeList: [
+      '15:30-16:30',
+      '14:30-15:30',
+      '14:00-14:30',
+      '13:30-14:00',
+      '13:00-13:30',
+      '11:00-11:30',
+      '10:00-11:00',
+      '9:00-10:00',
+    ],
   },
-};
+
+  notifyValue: '01', // 短信通知选择 01: 男 02: 女
+}
 
 // https://www.gdhy.gov.cn/yyjh.do?do=preYyxxOper&yyrq=2022-05-19&djjg=4403040A1000&yysj=16:30-17:00&ydbllx=01
 
@@ -60,58 +55,10 @@ const Page = {
     button.click();
   },
 
-  autoFillBasicInfoForm() {
+  autoClickNextButton() {
     // page 2
-    const maleInfo = info.male.firstPageInfo;
-    const femaleInfo = info.female.firstPageInfo;
-    [maleInfo, femaleInfo].forEach((_info) => {
-      // address 没有任何前置、后置依赖，直接填充
-      const addressInfo = _info.address;
-      const addressEditor = find(addressInfo.editor);
-      addressEditor.value = addressInfo.value;
-
-      const changeEvent = new Event('change');
-
-      // 户籍所在市、区、街道
-      const cityInfo = _info.city;
-      const cityEditor = find(cityInfo.editor);
-      cityEditor.value = cityInfo.value;
-      cityEditor.dispatchEvent(changeEvent);
-      setTimeout(() => {
-        const areaInfo = _info.area;
-        const areaEditor = find(areaInfo.editor);
-        areaEditor.value = areaInfo.value;
-        areaEditor.dispatchEvent(changeEvent);
-        setTimeout(() => {
-          const streetInfo = _info.street;
-          const streetEditor = find(streetInfo.editor);
-          streetEditor.value = streetInfo.value;
-        }, 500);
-      }, 500);
-      
-      // 常驻市、区、街道（非必填）
-      // const liveCityInfo = _info.liveCity;
-      // const liveCityEditor = find(liveCityInfo.editor);
-      // liveCityEditor.value = liveCityInfo.value;
-      // liveCityEditor.dispatchEvent(changeEvent);
-      // setTimeout(() => {
-      //   const liveAreaInfo = _info.liveArea;
-      //   const liveAreaEditor = find(liveAreaInfo.editor);
-      //   liveAreaEditor.value = liveAreaInfo.value;
-      //   console.log(liveAreaEditor);
-      //   liveAreaEditor.dispatchEvent(changeEvent);
-      //   setTimeout(() => {
-      //     const liveStreetInfo = _info.liveStreet;
-      //     const liveStreetEditor = find(liveStreetInfo.editor);
-      //     liveStreetEditor.value = liveStreetInfo.value;
-      //   }, 500);
-      // }, 500);
-
-    });
-    setTimeout(() => {
-      const nextButton = find('input[class="btn_1"]');
-      //nextButton.click();
-    }, 1000);
+    const nextButton = find('input[class="btn_1"]');
+    nextButton.click();
   },
 
   autoFillTimeAndBase() {
@@ -124,10 +71,71 @@ const Page = {
     queryButton.click();
   },
 
+  autoFillOfficeAndTime() {
+    // page 5
+    // 按优先级选择办理网点
+    const officeList = info.address.officeList;
+    let selectedOffice = false;
+    
+    for (let i = 0; i < officeList.length; i++) {
+      const officeValue = officeList[i];
+      const officeEditor = find(`input[type="radio"][name="djjg"][value="${officeValue}"]`);
+      console.log(`尝试选择办理网点: ${officeValue}`, officeEditor);
+      
+      if (officeEditor && !officeEditor.disabled) {
+        officeEditor.click();
+        console.log(`成功选择办理网点: ${officeValue}`);
+        selectedOffice = true;
+        break;
+      }
+    }
+    
+    if (!selectedOffice) {
+      console.log('没有找到可用的办理网点');
+      // 如果都没有找到，尝试选择第一个可用的
+      const firstAvailableOffice = find('input[type="radio"][name="djjg"]:not([disabled])');
+      if (firstAvailableOffice) {
+        firstAvailableOffice.click();
+        console.log(`选择了第一个可用办理网点: ${firstAvailableOffice.value}`);
+      }
+    }
+    
+    // 按优先级选择时间段
+    const timeList = info.address.timeList;
+    let selectedTime = false;
+    
+    for (let i = 0; i < timeList.length; i++) {
+      const timeValue = timeList[i];
+      const timeEditor = find(`input[type="radio"][name="yysj"][value="${timeValue}"]`);
+      console.log(`尝试选择时间段: ${timeValue}`, timeEditor);
+      
+      if (timeEditor && !timeEditor.disabled) {
+        timeEditor.click();
+        console.log(`成功选择时间段: ${timeValue}`);
+        selectedTime = true;
+        break;
+      }
+    }
+    
+    if (!selectedTime) {
+      console.log('没有找到可用的时间段');
+      // 如果都没有找到，尝试选择第一个可用的
+      const firstAvailableTime = find('input[type="radio"][name="yysj"]:not([disabled])');
+      if (firstAvailableTime) {
+        firstAvailableTime.click();
+        console.log(`选择了第一个可用时间段: ${firstAvailableTime.value}`);
+      }
+    }
+
+    // 跳转下一步
+    const nextButton = find('input[class="btn_1"]');
+    nextButton.click();
+  },
+
   autoFillCoupleInfoForm() {
     // page 4
-    const maleInfo = info.male.secondPageInfo;
-    const femaleInfo = info.female.secondPageInfo;
+    const maleInfo = info.maleInfo;
+    const femaleInfo = info.femaleInfo;
     [maleInfo, femaleInfo].forEach(_info => {
       const blurEvent = new Event('blur');
       const keys = Object.keys(_info);
@@ -140,11 +148,20 @@ const Page = {
         }
       });
     });
+
+    // 预约成功通知选择
+    const notifyEditor = find(`input[name="dxtzf"][value="${info.notifyValue}"]`);
+    notifyEditor.click();
+
+    // 点击获取验证码
+    setTimeout(() => {
+      const getCodeButton = find('#sms_get');
+      getCodeButton.click();
+    }, 200);
   },
   
   bindEvent: function() {
     const that = this;
-
     window.addEventListener('load', () => {
       sendMessage({ action: 'PAGE_LOAD', });
     }, false);
@@ -156,9 +173,8 @@ const Page = {
         sendResponse('自动跳转去结婚登记流程');
         that.autoClickEntryButton();
       } else if (action === 'FILL_PAGE_2') {
-        // 填充基本信息
-        that.autoFillBasicInfoForm();
-        sendResponse('ok');
+        sendResponse('自动跳转至选择办理网点及时间');
+        that.autoClickNextButton();
       } else if (action === 'FILL_PAGE_3') {
         // 自动选择预约民政局和日期
         that.autoFillTimeAndBase();
@@ -167,7 +183,11 @@ const Page = {
         // 填充人员信息
         that.autoFillCoupleInfoForm();
         sendResponse('自动填写新人信息！！！！！');
-      } else  {
+      } else if (action === 'FILL_PAGE_5') {
+        // 自动选择办理网点和时间
+        that.autoFillOfficeAndTime();
+        sendResponse('自动选择办理网点和时间');
+      } else {
         sendResponse('page received order from extension, but do not know what.')
       }
 		});
