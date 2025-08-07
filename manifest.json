@@ -1,7 +1,7 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "Marie",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"description": "广东省结婚登记预约小帮手",
 	"icons": {
 		"19": "images/logo.png",
@@ -9,7 +9,7 @@
 		"128": "images/logo.png"
 	},
 
-	"browser_action": {
+	"action": {
 		"default_title": "快速填好预约结婚领证用的各项信息",
 		"default_popup": "popup.html"
 	},
@@ -20,9 +20,9 @@
 		"run_at": "document_start"
 	}],
 
-	"permissions": ["tabs"],
+	"permissions": ["activeTab"],
 
 	"background": {
-		"scripts": []
+		"service_worker": "background/background.js"
 	}
 }
